@@ -2,8 +2,9 @@ package com.mythos;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import org.bouncycastle.crypto.fips.FipsDRBG;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.fips.FipsSHS;
-import org.bouncycastle.crypto.prng.SP800SecureRandomBuilder;
 import org.bouncycastle.util.encoders.Hex;
 
 /**
@@ -26,8 +27,8 @@ public class Shamir
   {
     try
       {
-        SP800SecureRandomBuilder builder = new SP800SecureRandomBuilder();
-        random = builder.buildHash(new FipsSHS.HashMechanism(), null, false);
+        // Use the FIPS approved secure random directly
+        random = CryptoServicesRegistrar.getSecureRandom();
       }
     catch (Exception e)
       {
@@ -36,19 +37,19 @@ public class Shamir
   }
   
   /**
-   * Splits a secret into n shares, where k shares are required to reconstruct it.
+   * Splits a secret into n shards, where k shards are required to reconstruct it.
    *
    * @param secret The secret to split, encoded as a byte array
-   * @param n The total number of shares to generate
-   * @param k The threshold of shares required to reconstruct
-   * @return Array of n shares
+   * @param n The total number of shards to generate
+   * @param k The threshold of shards required to reconstruct
+   * @return Array of n shards
    * @throws IllegalArgumentException if parameters are invalid
    */
-  public Share[] split(byte[] secret, int n, int k)
+  public Shard[] split(byte[] secret, int n, int k)
   {
     if (k > n)
       {
-        throw new IllegalArgumentException("Threshold k cannot be greater than total shares n");
+        throw new IllegalArgumentException("Threshold k cannot be greater than total shards n");
       }
     if (k < 2)
       {
@@ -69,8 +70,8 @@ public class Shamir
         coeff[i] = new BigInteger(PRIME.bitLength(), random).mod(PRIME);
       }
     
-    // Generate shares
-    Share[] shares = new Share[n];
+    // Generate shards
+    Shard[] shards = new Shard[n];
     for (int i = 0; i < n; i++)
       {
         BigInteger x = BigInteger.valueOf(i + 1);
@@ -82,31 +83,31 @@ public class Shamir
             y = y.add(coeff[j].multiply(x.pow(j + 1))).mod(PRIME);
           }
         
-        shares[i] = new Share(x, y);
+        shards[i] = new Shard(x, y);
       }
     
-    return shares;
+    return shards;
   }
   
   /**
-   * Reconstructs the secret from k or more shares using Lagrange interpolation.
+   * Reconstructs the secret from k or more shards using Lagrange interpolation.
    *
-   * @param shares Array of shares to use for reconstruction
-   * @param k The threshold of shares required
+   * @param shards Array of shards to use for reconstruction
+   * @param k The threshold of shards required
    * @return The reconstructed secret as a byte array
-   * @throws IllegalArgumentException if not enough valid shares are provided
+   * @throws IllegalArgumentException if not enough valid shards are provided
    */
-  public byte[] reconstruct(Share[] shares, int k)
+  public byte[] reconstruct(Shard[] shards, int k)
   {
-    if (shares.length < k)
+    if (shards.length < k)
       {
         throw new IllegalArgumentException(
-          "Not enough shares provided. Need at least " + k + " shares.");
+          "Not enough shards provided. Need at least " + k + " shards.");
       }
     
     BigInteger secret = BigInteger.ZERO;
     
-    // Use the first k shares for reconstruction
+    // Use the first k shards for reconstruction
     for (int i = 0; i < k; i++)
       {
         BigInteger numerator = BigInteger.ONE;
@@ -116,14 +117,14 @@ public class Shamir
           {
             if (i != j)
               {
-                numerator = numerator.multiply(shares[j].x.negate())
+                numerator = numerator.multiply(shards[j].x.negate())
                   .mod(PRIME);
                 denominator = denominator.multiply(
-                  shares[i].x.subtract(shares[j].x)).mod(PRIME);
+                  shards[i].x.subtract(shards[j].x)).mod(PRIME);
               }
           }
         
-        BigInteger value = shares[i].y.multiply(numerator)
+        BigInteger value = shards[i].y.multiply(numerator)
           .multiply(denominator.modInverse(PRIME)).mod(PRIME);
         secret = secret.add(value).mod(PRIME);
       }
@@ -132,14 +133,14 @@ public class Shamir
   }
   
   /**
-   * Represents a single share of a split secret.
+   * Represents a single shard of a split secret.
    */
-  public static class Share
+  public static class Shard
   {
     public final BigInteger x;
     public final BigInteger y;
     
-    public Share(BigInteger x, BigInteger y)
+    public Shard(BigInteger x, BigInteger y)
     {
       this.x = x;
       this.y = y;
@@ -148,46 +149,9 @@ public class Shamir
     @Override
     public String toString()
     {
-      return String.format("Share(x=%s, y=%s)",
+      return String.format("Shard(x=%s, y=%s)",
                           Hex.toHexString(x.toByteArray()),
                           Hex.toHexString(y.toByteArray()));
     }
   }
-  
-  /**
-   * Example usage of the Shamir secret sharing implementation.
-   
-  public static void main(String[] args)
-  {
-    try
-      {
-        Shamir shamir = new Shamir();
-        
-        // Example secret
-        byte[] secret = "This is a secret message".getBytes();
-        
-        // Split into 5 shares with a threshold of 3
-        Share[] shares = shamir.split(secret, 5, 3);
-        
-        System.out.println("Generated shares:");
-        for (Share share : shares)
-          {
-            System.out.println(share);
-          }
-        
-        // Reconstruct secret using first 3 shares
-        Share[] reconstruction = new Share[3];
-        System.arraycopy(shares, 0, reconstruction, 0, 3);
-        
-        byte[] reconstructed = shamir.reconstruct(reconstruction, 3);
-        System.out.println("\nReconstructed secret: "
-                          + new String(reconstructed));
-      }
-    catch (Exception e)
-      {
-        System.err.println("Error: " + e.getMessage());
-        e.printStackTrace();
-      }
-  }
-      **/
 }
