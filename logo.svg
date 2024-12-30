@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="300" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Dark background -->
+    <rect x="0" y="0" width="1000" height="300" fill="#1a1b26"/>
+    
+    <!-- Main group for centering -->
+    <g transform="translate(150, 0)">
+        <!-- ASCII Art Output -->
+        <text x="30" y="30" font-family="Menlo, Monaco, monospace" font-size="14" fill="#a9b1d6" xml:space="preserve">
+            <tspan x="30" dy="0">     ▄▄▄▄███▄▄▄▄   ▄██   ▄      ▄█      ███      ▄█    █▄    ▄██████▄     ▄████████</tspan>
+            <tspan x="30" dy="16">   ▄██▀▀▀███▀▀▀██▄ ███   ██▄   ███  ▀█████████▄ ███    ███  ███    ███   ███    ███</tspan>
+            <tspan x="30" dy="16">   ███   ███   ███ ███▄▄▄███   ███▌    ▀███▀▀██ ███    ███  ███    ███   ███    █▀</tspan>
+            <tspan x="30" dy="16">   ███   ███   ███ ▀▀▀▀▀▀███   ███▌     ███   ▀ ███    ███  ███    ███   ███</tspan>
+            <tspan x="30" dy="16">   ███   ███   ███ ▄██   ███   ███▌     ███     ███    ███  ███    ███  ▀███████████</tspan>
+            <tspan x="30" dy="16">   ███   ███   ███ ███   ███   ███     ███      ███    ███  ███    ███           ███</tspan>
+            <tspan x="30" dy="16">   ███   ███   ███ ███   ███   ███    ███       ███    ███  ███    ███     ▄█    ███</tspan>
+            <tspan x="30" dy="16">    ▀█   ███   █▀   ▀█████▀    █▀    ▄██▀        ▀██████▀    ▀██████▀    ▄████████▀</tspan>
+        </text>
+        
+        <!-- Box with gradient text for extra pop, shifted to center -->
+        <text x="160" y="190" font-family="Menlo, Monaco, monospace" font-size="14" fill="#7aa2f7" xml:space="preserve">
+            <tspan x="160" dy="0">╔═══════════════════════════════════════════════╗</tspan>
+            <tspan x="160" dy="16">║      A lightweight, portable secret store      ║</tspan>
+            <tspan x="160" dy="16">╚═══════════════════════════════════════════════╝</tspan>
+        </text>
+    </g>
+</svg>
