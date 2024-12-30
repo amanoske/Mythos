@@ -123,27 +123,4 @@ public class Shamir
       
       return secret.toByteArray();
     }
-    
-    /**
-     * Represents a single shard of a split secret.
-     */
-    public static class Shard
-    {
-        public final BigInteger x;
-        public final BigInteger y;
-        
-        public Shard(BigInteger x, BigInteger y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-        
-      @Override
-        public String toString()
-        {
-          return String.format("Shard(x=%s, y=%s)",
-                              Hex.toHexString(x.toByteArray()),
-                              Hex.toHexString(y.toByteArray()));
-        }
-    }
 }
