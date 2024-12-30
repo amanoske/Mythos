@@ -4,7 +4,7 @@ Mythos is a lightweight, portable secret store protected by strong encryption. D
 Mythos is designed to be as simple and portable as possible. It does not require external authentication servers or database systems to store or retrieve secrets. But in exchange for this simplicity and portability, Mythos does not support multiple users or fine grained roles/entitlement. 
 
 ## How It Works
-Mythos protects collections of secrets entrusted to it in **Legends**, encrypted file containers. 
+Mythos protects collections of secrets entrusted to it in a **Legend**, an encrypted file. 
 
 Legends are protected at rest with AES-256 GCM encryption. The key for this encryption (i.e.: its **Data Encryption Key** or **DEK**) is never stored. Instead it is generated once when a Legend is first *initialized* and reconstructed every time a permitted user wants to access that Legend. 
 
