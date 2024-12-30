@@ -17,15 +17,32 @@ public class CLI
     private final BufferedReader reader;
     private final Console console;
     private static final String PROMPT_PREFIX = "> ";
-    ArrayList<Shard> keyring; 
-    Legend currentLegend;
-    
+    private ArrayList<Shard> keyring; 
+    private Legend currentLegend;
+    private byte[] dek; 
+    private static final String LOGO = "\n" +
+			"                                                                               \n" +
+			"     ▄▄▄▄███▄▄▄▄   ▄██   ▄      ▄█      ███      ▄█    █▄    ▄██████▄     ▄████████ \n" +
+			"   ▄██▀▀▀███▀▀▀██▄ ███   ██▄   ███  ▀█████████▄ ███    ███  ███    ███   ███    ███ \n" +
+			"   ███   ███   ███ ███▄▄▄███   ███▌    ▀███▀▀██ ███    ███  ███    ███   ███    █▀  \n" +
+			"   ███   ███   ███ ▀▀▀▀▀▀███   ███▌     ███   ▀ ███    ███  ███    ███   ███        \n" +
+			"   ███   ███   ███ ▄██   ███   ███▌     ███     ███    ███  ███    ███  ▀███████████ \n" +
+			"   ███   ███   ███ ███   ███   ███     ███      ███    ███  ███    ███           ███ \n" +
+			"   ███   ███   ███ ███   ███   ███    ███       ███    ███  ███    ███     ▄█    ███ \n" +
+			"    ▀█   ███   █▀   ▀█████▀    █▀    ▄██▀        ▀██████▀    ▀██████▀    ▄████████▀  \n" +
+			"                                                                                       \n" +
+			"      ╔═══════════════════════════════════════════════╗               \n" +
+			"      ║      A lightweight, portable secret store      ║               \n" +
+			"      ╚═══════════════════════════════════════════════╝               \n";
+
     public CLI()
     {
         this.console = System.console();
         this.reader = new BufferedReader(new InputStreamReader(System.in));
         keyring = new ArrayList<Shard>();
         currentLegend = new Legend();
+        dek = null;
+        System.out.println(LOGO);
     }
 
     /**
@@ -60,7 +77,7 @@ public class CLI
       System.out.println("********************************");
       System.out.println("legend status: Lists the current Legend and checks whether Mythos is able to access the current Legend with the Shard Keys it has in its Keyring.");
       System.out.println("legend new [name]: Create a new Legend file with name 'name'.");
-      System.out.println("legend set [path]: Set the current active Legend to the Legend located at the path given.");
+      System.out.println("legend set [path]: Set the current active Legend to the Legend located at the path given. You should flush the keyring after doing this!");
       System.out.println("********************************");
       System.out.println("******KEYRING COMMANDS******");
       System.out.println("********************************");
