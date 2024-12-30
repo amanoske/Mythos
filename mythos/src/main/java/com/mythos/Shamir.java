@@ -1,3 +1,5 @@
+package com.mythos;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import org.bouncycastle.crypto.fips.FipsSHS;
@@ -154,7 +156,7 @@ public class Shamir
   
   /**
    * Example usage of the Shamir secret sharing implementation.
-   */
+   
   public static void main(String[] args)
   {
     try
@@ -187,4 +189,5 @@ public class Shamir
         e.printStackTrace();
       }
   }
+      **/
 }
