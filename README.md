@@ -2,11 +2,11 @@
 ![Mythos Logo](logo.svg)
 
 # Mythos
-Mythos is a lightweight, portable secret store protected by strong encryption.
+Mythos is a lightweight system that protects small collections of text based secrets with strong cryptography.
 
 Mythos is designed to be as simple and portable as possible. It does not require external authentication servers or database systems to store or retrieve secrets. But in exchange for this simplicity and portability, Mythos does not support multiple users or fine grained roles/entitlement. 
 
-Mythos is not an enterprise secrets manager. It is designed to support personal protection use cases (e.g.: protecting a list of passwords or private keys held in public cloud storage) with cryptography typically used in military environments in order to maintain atrong Perfect Forward Secrecy.
+Mythos is not an enterprise secrets manager. It is designed to support personal protection use cases (e.g.: protecting a list of passwords or private keys backed up in public cloud storage) with encryption typically used in defense or military environments.
 
 
 ## How It Works
